@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <input type="text" id="user_name">
+    <br>
+    <span id="name"></span>
+    <br>
+    <br>
+    <br>
+    <h3 style="color:red;">notice: </h3>
+    <h3 style="color:red;">1. In function defineProperty , set and get will be triggered automatically when data obj changed , without binding event listener</h3>
+    <h3 style="color:red;">2. If the property of obj is added without defineProperty , the set and get will not be triggered . In other words , the set and get functions of every property must be added respectively.</h3>
+    <h3 style="color:red;">3. the expression : obj.user_name = "robin" , will not be added to obj , you can console.log(obj) to prove it , but the obj has set and get functions about user_name (Obviously , these functions come from defineProperty).</h3>
+</div>
+<script>
+    var obj = {
+        pwd: "123456"
+    };
+    Object.defineProperty(obj,"user_name",{
+        get: function(){
+            console.log("get init");
+        },
+        set: function(val){
+            console.log("set init");
+            document.getElementById("name").innerText = val;
+            document.getElementById("user_name").value = val;
+        }
+    });
+    document.getElementById("user_name").addEventListener("keyup",function(e){
+        obj.user_name = e.target.value;
+    });
+</script>
+</body>
+</html>
