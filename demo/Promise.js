@@ -24,7 +24,7 @@ let getUserInfo = ()=>{
   });
 }
 
-checkLogin().then((res)=>{
+checkLogin().then((res)=>{//res就是resolve中设置的对象
   if(res.status==0){
     console.log("login success");
     return getUserInfo();

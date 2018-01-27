@@ -1,86 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>vue-resource插件案列</title>
   <script src="../node_modules/vue/dist/vue.js"></script>
   <script src="../node_modules/axios/dist/axios.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
-<div id="app" class="container">
-  <h1>axios插件讲解</h1>
-  <a href="javascript:;" class="btn btn-primary" v-on:click="get">Get请求</a>
-  <a href="javascript:;" class="btn btn-primary" @click="post">Post请求</a>
-  <a href="javascript:;" class="btn btn-primary" @click="http">http</a>
-  <div>
-    <span>{{msg}}</span>
+  <div id="app" class="container">
+    <h2>axios插件的使用</h2>
+    <a href="javascript:;" class="btn btn-primary" @click="get">Get</a>
+    <a href="javascript:;" class="btn btn-primary" @click="post">Post</a>
+    <a href="javascript:;" class="btn btn-primary" @click="http">Http</a>
+    <a href="javascript:;" class="btn btn-primary" @click="all">all</a>
+    <div>{{msg}}</div>
   </div>
-</div>
-<script>
-  new Vue({
-    el:"#app",
-    data:{
-      msg:''
-    },
-    mounted: function () {
-      axios.interceptors.request.use(function (config) {
-        console.log("request init.");
+  <script>
+    new Vue({
+      el:"#app",
+      data:{
+        msg:''
+      },
+      mounted: function () {
+//        axios.defaults.baseURL = 'http://localhost:63342/ImoocMall/';
+        axios.defaults.headers.common['author'] = 'jackbean'
 
-        return config;
-      })
-      axios.interceptors.response.use(function (response) {
-        console.log("response init.");
-        return response;
-      })
-    },
-    methods:{
-      get: function () {
-        axios.get("../package1.json",{
-          params:{
-            userId:"999"
-          },
-          headers:{
-            token:"jack"
-          }
-        }).then(res=>{
-          this.msg = res.data;
-        }).catch(function (error) {
-          console.log("error init."+error)
+        var instance = axios.create({
+          baseURL: 'https://api.example.com'
+        });
+        axios.interceptors.request.use(function (config) {
+          console.log("request init");
+          return config;
+        }, function (error) {
+          console.log("request error");
+          return Promise.reject(error);
+        });
+        axios.interceptors.response.use(function (response) {
+          return response;
+        }, function (error) {
+          return Promise.reject(error);
         });
       },
-      post: function () {
-        axios.post("../package.json",{
-          userId:"888"
-        },{
-          headers:{
-            token:"tom"
+      methods:{
+        get: function () {
+          axios.get("../package.json",{
+            params:{
+              userId:"123"
+            },
+            headers:{
+              access_token:"abcd"
+            },
+            before: function () {
+              console.log("before init.");
+            }
+          }).then(res=>{
+            this.msg = res.data;
+          }).catch(function (error) {
+            console.log("catch eroro"+error)
+          });
+        },
+        post: function () {
+          axios.post("../package.json",{
+            userId:"123"
+          },{
+            headers:{
+              access_token:"abcd"
+            },
+            before: function () {
+              console.log("before init.");
+            }
+          }).then(res=>{
+            this.msg = res.data;
+          });
+        },
+        http: function () {
+          axios({
+            url:"../package.json",
+            method:"POST",
+            data:{
+              userId:"111"
+            },
+            headers:{
+              token:"101"
+            }
+          }).then(res=>{
+            this.msg = res.data;
+          })
+        },
+        all: function () {
+          var getIndex = function () {
+            return axios.get("../index.html");
           }
-        }).then(res=>{
-          this.msg = res.data;
-        }).catch(function (error) {
-
-        })
-      },
-      http: function () {
-        axios({
-          url:"../package.json",
-          method:"get",
-          data:{
-            userId:"101"
-          },
-          params:{
-            userId:"102"
-          },
-          headers:{
-            token:"http-test"
+          var getPack = function () {
+            return axios.get("../package.json")
           }
-        }).then(res=>{
-          this.msg = res.data;
-        })
+          axios.all([getIndex(),getPack()]).then(axios.spread(function (index,pack) {
+            console.log("all request")
+          }));
+        }
       }
-    }
-  });
-</script>
+    });
+  </script>
 </body>
 </html>

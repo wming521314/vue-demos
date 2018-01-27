@@ -2,62 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ES6-2Demo演示</title>
+    <title>ES6-2</title>
 </head>
 <body>
-<h2>
-  ES6-2Demo演示
-</h2>
+<h2>ES6-2</h2>
+<div></div>
 <script>
-  function sum(x,y,z){
-    let total = 0;
-    if(x)total+=x;
-    if(y)total+=y;
-    if(z)total+=z;
+  function checkLogin(){
+    return new Promise(function (resolve,reject) {
 
-    console.log(`total:${total}`)
+      /*
+      * 根据Cookie判断当前用户是否登录
+      * **/
+
+      let cookieFlag = document.cookie.indexOf("userId")>-1?true:false
+
+      if(cookieFlag=true){
+        resolve({
+          status:0,
+          result:true
+        })
+      }else{
+
+        reject("error")
+      }
+
+    });
   }
 
-  sum(5,"",9)
-
-  function sum2(...m){
-    let total = 0;
-    for(var i of m){
-      total += i;
-    }
-    console.log(`total:${total}`)
+  function getUserId(){
+    return new Promise(function (resolve,reject) {
+      let user = {
+        userId:"101"
+      }
+      resolve(user);
+    })
   }
 
-  sum2(4,8,9,10);
-
-  let sum3 = (...m)=>{
-    let total = 0;
-    for(var i of m){
-      total += i;
+  checkLogin().then(function (res) {
+    if(res.status==0){
+      console.log("login success")
+      return getUserId();
+    }else{
+      console.log("login fail")
     }
-    console.log(`total:${total}`)
-  };
+  }).catch(function (error) {
+    console.log("login error")
+  }).then(function (res2) {
+    console.log("userId:"+res2.userId);
+  })
 
-  sum3(4,8,9,10);
-
-  var [x,y] = [4,8]
-
-  console.log(...[4,8]);
-
-  let arr1 = [1,3];let arr2 = [4,8];
-  console.log("concat:"+arr1.concat(arr2));
-
-//  [...arr1,...arr2]
-
-//  var [x,y] = [4,8];
-
-  var [x,...y] = [4,8,10,30]
-
-  let [a,b,c] = "ES6";
-
-  let xy = [...'ES6'];
-
-
+  Promise.all([checkLogin(),getUserId()]).then(function ([res1,res2]) {
+    console.log("res1"+res1);
+    console.log("res2"+res2);
+  })
 </script>
 </body>
 </html>
