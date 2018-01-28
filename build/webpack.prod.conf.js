@@ -33,7 +33,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       compress: {
         warnings: false
       },
-      sourceMap: true //open debug mode
+      sourceMap: true
     }),
     // extract css into its own file
     new ExtractTextPlugin({
