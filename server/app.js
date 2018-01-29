@@ -29,7 +29,7 @@ app.use(function (req,res,next) {
     next();
   }else{
       console.log("url:"+req.originalUrl);
-      if(req.originalUrl=='/users/login' || req.originalUrl=='/users/logout' || req.originalUrl.indexOf('/goods/list')>-1){
+      if(req.originalUrl=='/users/login' || req.originalUrl=='/users/logout' || req.originalUrl.indexOf('/goods/list')>-1 || req.originalUrl.indexOf('/goods/test')>-1){
           next();
       }else{
           res.json({
@@ -45,20 +45,20 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/goods', goods);
 
-// catch 404 and forward to error handler
+// catch 404 and forward to error.html handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
-// error handler
+// error.html handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // set locals, only providing error.html in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // render the error.html page
   res.status(err.status || 500);
   res.render('error');
 });

@@ -140,9 +140,8 @@
                 var res = response.data;
                 this.loading = false;
                 if(res.status=="0"){
-                  if(flag){
+                  if(flag){//
                       this.goodsList = this.goodsList.concat(res.result.list);
-
                       if(res.result.count==0){
                           this.busy = true;
                       }else{

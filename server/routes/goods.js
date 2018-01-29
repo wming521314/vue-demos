@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 var Goods = require('../models/goods');
 
 //连接MongoDB数据库
-mongoose.connect('mongodb://127.0.0.1:27017/dumall');
+mongoose.connect('mongodb://127.0.0.1:27017/dumall',{useMongoClient:true});
+//mongoose.connect('mongodb://root:123456@127.0.0.1:27017/dumall',{useMongoClient:true});
 
 mongoose.connection.on("connected", function () {
   console.log("MongoDB connected success.")
@@ -18,6 +19,25 @@ mongoose.connection.on("disconnected", function () {
   console.log("MongoDB connected disconnected.")
 });
 
+router.get("/test",function(req,res,next){
+  let goodsModel = Goods.find({}).exec((err,doc)=>{
+    if(err){
+      res.json({
+        status: 1,
+        msg: err.message
+      });
+    }else{
+      res.json({
+        status: 0,
+        msg: "",
+        result: {
+          count: doc.length,
+          list: doc
+        }
+      });
+    }
+  });
+});
 //查询商品列表数据
 router.get("/list", function (req,res,next) {
   let page = parseInt(req.param("page"));
@@ -50,6 +70,7 @@ router.get("/list", function (req,res,next) {
             msg:err.message
           });
       }else{
+          console.log(doc);
           res.json({
               status:'0',
               msg:'',

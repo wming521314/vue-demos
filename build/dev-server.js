@@ -64,7 +64,7 @@ app.use(require('connect-history-api-fallback')())
 app.use(devMiddleware)
 
 // enable hot-reload and state-preserving
-// compilation error display
+// compilation error.html display
 app.use(hotMiddleware)
 
 // serve pure static assets
