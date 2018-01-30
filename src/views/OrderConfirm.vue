@@ -141,7 +141,8 @@
               tax:400,
               subTotal:0,
               orderTotal:0,
-              cartList:[]
+              cartList:[],
+              addressId:""
           }
       },
       mounted(){
@@ -157,6 +158,7 @@
       },
       methods:{
          init(){
+           this.addressId = this.$route.query.addressId;
             axios.get("/users/cartList").then((response)=>{
                 let res = response.data;
                 this.cartList = res.result;
@@ -171,9 +173,9 @@
             });
          },
           payMent(){
-              var addressId = this.$route.query.addressId;
+              //var addressId = this.$route.query.addressId;
               axios.post("/users/payMent",{
-                addressId:addressId,
+                addressId:this.addressId,
                 orderTotal:this.orderTotal
               }).then((response)=>{
                   let res = response.data;

@@ -89,7 +89,7 @@ router.get("/getCartCount", function (req,res,next) {
         let cartList = doc.cartList;
         let cartCount = 0;
         cartList.map(function(item){
-          cartCount += parseFloat(item.productNum);
+          cartCount += parseInt(item.productNum);
         });
         res.json({
           status:"0",

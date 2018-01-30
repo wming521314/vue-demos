@@ -151,7 +151,7 @@
     export default{
         data(){
             return{
-              userName:'admin',
+              userName:'robin',
               userPwd:'123456',
               errorTip:false,
               loginModalFlag:false
