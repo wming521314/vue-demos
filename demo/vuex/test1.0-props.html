@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Props</title>
+  <script src="../../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <h1>Hello App!</h1>
+  <h1>{{msg}}</h1>
+  <counter :count="count"></counter>
+</div>
+
+<script>
+  const counter = {
+    template: `
+      <div><p>{{count}}</p></div>
+    `,
+    props: ['count']
+  }
+  new Vue({
+    el:"#app",
+    data: {
+      msg: "子组件通过props接收父组件的传值",
+      count: 0
+    },
+    components:{
+      counter
+    }
+  });
+</script>
+</body>
+</html>

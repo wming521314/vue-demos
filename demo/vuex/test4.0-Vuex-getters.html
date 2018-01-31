@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vuex-getterss</title>
+  <script src="../../node_modules/vue/dist/vue.js"></script>
+  <script src="../../node_modules/vuex/dist/vuex.js"></script>
+</head>
+<body>
+<div id="app">
+  <h1>Hello App!</h1>
+  <h1>{{msg}}</h1>
+  <a href="javascript:;" @click="updateName">更新用户名</a>
+  <counter></counter>
+  <h3>getter用于需要从state中派生出新的状态的场景,只有当它的依赖值发生了改变才会被重新计算。</h3>
+  <a target="_blank" href="https://vuex.vuejs.org/zh-cn/getters.html">Getter官方文档</a>
+</div>
+
+<script>
+  const counter = {
+    template: `
+      <div>
+        <p>用户名:{{name}}</p>
+        <p>{{welcome}}</p>
+      </div>
+    `,
+    computed:{
+      name(){
+        return this.$store.state.name;
+      },
+      welcome(){
+        return this.$store.getters.welcome;
+      }
+    }
+  }
+  const store = new Vuex.Store({
+    state:{
+      name:"robin"
+    },
+    getters:{
+      welcome:state=>{
+        return "Welcome " + state.name;
+      }
+    },
+    mutations:{
+      updateName(state,username){
+        state.name = username;
+      }
+    },
+    actions:{
+      updateNameAction(context,username){
+        context.commit("updateName",username);
+      }
+    }
+  });
+  new Vue({
+    el:"#app",
+    store,
+    data: {
+      msg: "getters使用"
+    },
+    components:{
+      counter
+    },
+    methods:{
+      updateName(){
+        this.$store.dispatch("updateNameAction","wming");
+      }
+    }
+  });
+</script>
+</body>
+</html>

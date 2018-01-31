@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vuex-state</title>
+  <script src="../../node_modules/vue/dist/vue.js"></script>
+  <script src="../../node_modules/vuex/dist/vuex.js"></script>
+</head>
+<body>
+<div id="app">
+  <h1>Hello App!</h1>
+  <h1>{{msg}}</h1>
+  <counter></counter>
+  <h3>相比之下:props只是解决父组件向子组件传值,如果有多层嵌套,props就会非常麻烦,如果而使用Vuex则简单明了</h3>
+</div>
+
+<script>
+  const counter = {
+    template: `
+      <div><p>{{count}}</p></div>
+    `,
+    computed:{
+      count(){
+        return this.$store.state.count;
+      }
+    }
+  }
+  const store = new Vuex.Store({
+    state:{
+      count: 15,//这个count可以在任何组件中使用
+    }
+  });
+  new Vue({
+    el:"#app",
+    store,
+    data: {
+      msg: "使用Vuex传递状态"
+    },
+    components:{
+      counter
+    }
+  });
+</script>
+</body>
+</html>

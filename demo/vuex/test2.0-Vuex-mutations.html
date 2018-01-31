@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>mutations</title>
+  <script src="../../node_modules/vue/dist/vue.js"></script>
+  <script src="../../node_modules/vuex/dist/vuex.js"></script>
+</head>
+<body>
+<div id="app">
+  <h1>Hello App!</h1>
+  <h1>{{msg}}</h1>
+  <a href="javascript:;" @click="add">自增</a>
+  <a href="javascript:;" @click="updateName">更新用户名</a>
+  <counter></counter>
+  <h3>注:</h3>
+  <h3>(1)store中的state里的属性不能与data里的属性重名;</h3>
+  <h3>(2)一般在state添加一个属性的同时配套添加mutations中对应的方法;</h3>
+</div>
+
+<script>
+  const counter = {
+    template: `
+      <div>
+        <p>点击数量:{{count}}</p>
+        <p>用户名:{{name}}</p>
+      </div>
+    `,
+    computed:{
+      count(){
+        return this.$store.state.count;
+      },
+      name(){
+        return this.$store.state.name;
+      }
+    }
+  }
+  const store = new Vuex.Store({
+    state:{
+      count: 15,//这个count可以在任何组件中使用
+      name:"robin"
+    },
+    mutations:{
+      increment(state){
+        state.count++;
+      },
+      /*increment(state,num){
+        state.count += num;
+      }*/
+      updateName(state,username){
+        state.name = username;
+      }
+    }
+  });
+  new Vue({
+    el:"#app",
+    store,
+    data: {
+      msg: "通过mutations改变state"
+    },
+    components:{
+      counter
+    },
+    methods:{
+      add(){
+        this.$store.commit("increment");
+        //this.$store.commit("increment",100);//也可以接收参数
+      },
+      updateName(){
+        this.$store.commit("updateName","wming");
+      }
+    }
+  });
+</script>
+</body>
+</html>
