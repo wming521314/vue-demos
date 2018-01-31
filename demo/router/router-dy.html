@@ -9,11 +9,15 @@
 </head>
 <body>
 <div id="app">
-  <h1>Hello App!</h1>
+  <h1>动态路由测试</h1>
   <router-link to="/home">home</router-link><br>
   <router-link to="/admin">admin</router-link><br>
   <router-link to="/home/haha">动态路由:/home/:id测试</router-link><br>
   <router-link to="/admin/robin/query">动态路由:/admin/:userId/query测试</router-link><br>
+  <h3>注意:</h3>
+  <h3>(1)每一条路径唯一对应一个视图,因此可以让多个路由指向同一个页面;</h3>
+  <h3>(2)不在子路由匹配不到就去匹配父路由的情况,如:/home/aa在本测试中没有定义,那就找不到,并不会匹配父路径/home;</h3>
+  <h3>(3)路径中的参数可以通过{{this.$route.params.userId}}直接获取,也可以通过mounted方法添加到data中,再从data中去取,这种方式虽多一步,但方便数据查看与管理;</h3>
   <router-view></router-view>
 </div>
 
@@ -30,15 +34,15 @@
     }
   };
   const admin = {
-    template:'<div>我是管理页面,参数为:{{param2}}</div>',
+    template:'<div>我是管理页面,参数为:{{this.$route.params.userId}}</div>',
     data: function () {
       return {
         param1:''
       }
     },
-    mounted: function () {
+    /*mounted: function () {
       this.param1 = this.$route.params.userId;
-    }
+    }*/
   };
   const routes = [
     { path: '/home', component: home },

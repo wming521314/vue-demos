@@ -9,9 +9,19 @@
 </head>
 <body>
 <div id="app">
-  <h1>Hello App!</h1>
-  <router-link :to="{path:'/home'}">/home</router-link>
-  <router-link to="/admin/robin">/admin/robin</router-link>
+  <h1>嵌套路由测试</h1>
+  <h3>嵌套路由有两层含义:</h3>
+  <h3>(1)路径嵌套:如/home/index是被嵌套在/home中的</h3>
+  <h3>(2)页面嵌套:当点击子路由的时候,父组件不会消失,子组件会累加到当前页面</h3>
+  <h3>注意:页面嵌套:必须满足两个条件,a.在route配置中子页面对应的路由一定要在对应父路径下的children属性中,b.子组件中必须有router-view标签</h3>
+  <ol>
+    <li><router-link to="/home">/home</router-link></li>
+    <li><router-link to="/home/index">/home/index</router-link></li>
+    <li><router-link to="/home/test">/home/test</router-link></li>
+    <li><router-link to="/wierd">/wierd</router-link></li>
+    <li><router-link to="/admin/robin">/admin/robin</router-link></li>
+    <li><router-link to="/admin/robin/profile">/admin/robin/profile</router-link></li>
+  </ol>
   <router-view></router-view>
 </div>
 
@@ -20,7 +30,6 @@
     template:`
               <div>
                 <p>我是主页</p>
-                <router-link :to="{path:'/home/index'}">/home/index</router-link>
                 <router-view></router-view>
               </div>
              `
@@ -29,10 +38,15 @@
     template:`
               <div>
                 <p>admin的主页</p>
-                <router-link to="/admin/robin/profile">/admin/robin/profile</router-link>
                 <router-view></router-view>
               </div>
-
+             `
+  };
+  const wierd = {
+    template:`
+              <div>
+                <p>这是一个奇怪的测试页面,你能看懂么?这的确是一个嵌套页面,但路径在字面量上并不嵌套,父路径:/home,子路径:/wierd</p>
+              </div>
              `
   };
   const index = {
@@ -40,6 +54,9 @@
   };
   const profile = {
     template:`<div>这是用户信息子路由页面:</div>`
+  };
+  const test = {
+    template:`<div><h3>test页面:虽然是二级路径,但可以作为单独页面显示,关键在于字面上的子路径是否在对应父路径下的children属性中<h3></div>`
   };
   const routes = [
     {
@@ -49,8 +66,16 @@
         {
           path: 'index',
           component: index
+        },
+        {
+          path: '/wierd',
+          component: wierd
         }
       ]
+    },
+    {
+      path: '/home/test',
+      component: test
     },
     {
       path: '/admin/:userId',
@@ -61,7 +86,8 @@
           component: profile
         }
       ]
-    }
+    },
+
   ]
   var router = new VueRouter({
     routes:routes
